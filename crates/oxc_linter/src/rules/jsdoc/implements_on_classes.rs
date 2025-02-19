@@ -4,7 +4,7 @@ use oxc_macros::declare_oxc_lint;
 use oxc_span::Span;
 
 use crate::{
-    ast_util::is_function_node,
+    ast_util::is_function_kind,
     context::LintContext,
     rule::Rule,
     utils::{get_function_nearest_jsdoc_node, should_ignore_as_internal, should_ignore_as_private},
@@ -77,7 +77,7 @@ fn is_function_inside_of_class<'a, 'b>(node: &'b AstNode<'a>, ctx: &'b LintConte
 
 impl Rule for ImplementsOnClasses {
     fn run<'a>(&self, node: &AstNode<'a>, ctx: &LintContext<'a>) {
-        if !is_function_node(node) {
+        if !is_function_kind(&node.kind()) {
             return;
         }
 
@@ -137,7 +137,7 @@ fn test() {
 			       * @class
 			       */
 			      function quux () {
-			
+
 			      }
 			      ",
             None,
@@ -150,7 +150,7 @@ fn test() {
 			       * @constructor
 			       */
 			      function quux () {
-			
+
 			      }
 			      ",
             None,
@@ -163,7 +163,7 @@ fn test() {
 			       * @constructor
 			       */
 			      const quux = () => {
-			
+
 			      }
 			      ",
             None,
@@ -179,7 +179,7 @@ fn test() {
 			         * @implements {SomeClass}
 			         */
 			        constructor () {
-			
+
 			        }
 			      }
 			      ",
@@ -196,7 +196,7 @@ fn test() {
 			         * @implements {SomeClass}
 			         */
 			        constructor () {
-			
+
 			        }
 			      }
 			      ",
@@ -213,7 +213,7 @@ fn test() {
 			         * @implements {SomeClass}
 			         */
 			        foo() {
-			
+
 			        }
 			      }
 			      ",
@@ -226,7 +226,7 @@ fn test() {
 			       *
 			       */
 			      function quux () {
-			
+
 			      }
 			      ",
             None,
@@ -261,7 +261,7 @@ fn test() {
 			       * @implements {SomeClass}
 			       */
 			      function quux () {
-			
+
 			      }
 			      ",
             None,
@@ -273,7 +273,7 @@ fn test() {
 			       * @implements {SomeClass}
 			       */
 			      const quux = () => {
-			
+
 			      }
 			      ",
             None,
@@ -286,7 +286,7 @@ fn test() {
 			       * @implements {SomeClass}
 			       */
 			      const quux = function() {
-			
+
 			      }
 			      ",
             None,

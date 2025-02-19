@@ -3,7 +3,7 @@ use oxc_macros::declare_oxc_lint;
 use oxc_span::Span;
 
 use crate::{
-    ast_util::is_function_node,
+    ast_util::is_function_kind,
     context::LintContext,
     rule::Rule,
     utils::{get_function_nearest_jsdoc_node, should_ignore_as_internal, should_ignore_as_private},
@@ -48,7 +48,7 @@ declare_oxc_lint!(
 
 impl Rule for RequireReturnsType {
     fn run<'a>(&self, node: &AstNode<'a>, ctx: &LintContext<'a>) {
-        if !is_function_node(node) {
+        if !is_function_kind(&node.kind()) {
             return;
         }
 
@@ -93,7 +93,7 @@ fn test() {
 			           * @returns {number}
 			           */
 			          function quux () {
-			
+
 			          }
 			      ",
             None,
@@ -128,7 +128,7 @@ fn test() {
 			           * @returns
 			           */
 			          function quux () {
-			
+
 			          }
 			      ",
             None,
@@ -140,7 +140,7 @@ fn test() {
 			           * @returns Foo.
 			           */
 			          function quux () {
-			
+
 			          }
 			      ",
             None,
@@ -152,7 +152,7 @@ fn test() {
 			           * @return Foo.
 			           */
 			          function quux () {
-			
+
 			          }
 			      ",
             None,

@@ -4,7 +4,7 @@ use oxc_span::Span;
 use serde::Deserialize;
 
 use crate::{
-    ast_util::is_function_node,
+    ast_util::is_function_kind,
     context::LintContext,
     rule::Rule,
     utils::{get_function_nearest_jsdoc_node, should_ignore_as_internal, should_ignore_as_private},
@@ -66,7 +66,7 @@ impl Rule for NoDefaults {
     }
 
     fn run<'a>(&self, node: &AstNode<'a>, ctx: &LintContext<'a>) {
-        if !is_function_node(node) {
+        if !is_function_kind(&node.kind()) {
             return;
         }
 

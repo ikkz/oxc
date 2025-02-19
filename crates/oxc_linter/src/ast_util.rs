@@ -422,8 +422,8 @@ pub fn is_global_require_call(call_expr: &CallExpression, ctx: &Semantic) -> boo
     call_expr.callee.is_global_reference_name("require", ctx.symbols())
 }
 
-pub fn is_function_node(node: &AstNode) -> bool {
-    match node.kind() {
+pub fn is_function_kind(kind: &AstKind) -> bool {
+    match kind {
         AstKind::Function(f) if f.is_function_declaration() => true,
         AstKind::Function(f) if f.is_expression() => true,
         AstKind::ArrowFunctionExpression(_) => true,
